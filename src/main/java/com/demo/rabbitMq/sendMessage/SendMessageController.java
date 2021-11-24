@@ -44,6 +44,19 @@ public class SendMessageController {
         long times = DateUtil.between(beginDate,endDate, DateUnit.MS);
         log.info("发送时间:{},与当前时间差为：{} 毫秒，msg内容：{}" , DateUtil.formatDateTime(beginDate) ,times,msg);
         sendMessageService.sendDelayMsgToMQ(msg,times);
+        log.info("发送时间:{},与当前时间差为：{} 毫秒，msg内容：{}" , DateUtil.formatDateTime(beginDate) ,times,msg);
+        return "发生成功！";
+    }
+
+    @GetMapping("/deadTest2")
+    public String deadTest2(String msg, String date){
+        //long times = getTimeDifference(date);
+        Date beginDate = new Date();
+        Date endDate = DateUtil.parse(date);
+        long times = DateUtil.between(beginDate,endDate, DateUnit.MS);
+        log.info("发送时间:{},与当前时间差为：{} 毫秒，msg内容：{}" , DateUtil.formatDateTime(beginDate) ,times,msg);
+        sendMessageService.sendDelayMsg(msg,Integer.valueOf((int) times));
+        log.info("发送时间:{},与当前时间差为：{} 毫秒，msg内容：{}" , DateUtil.formatDateTime(beginDate) ,times,msg);
         return "发生成功！";
     }
 

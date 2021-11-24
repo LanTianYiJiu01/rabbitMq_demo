@@ -1,6 +1,7 @@
 package com.demo.rabbitMq.service;
 
 import com.demo.rabbitMq.Constant.SysConstant;
+import com.demo.rabbitMq.config.DelayedRabbitMQConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,4 +30,16 @@ public class SendMessageService {
         });
     }
 
+    /**
+     * 插件方式 实现延时消息
+     * 没有 队列 先进后出 的问题。
+     * @param msg
+     * @param delayTime
+     */
+    public void sendDelayMsg(String msg, Integer delayTime) {
+        rabbitTemplate.convertAndSend(DelayedRabbitMQConfig.DELAYED_EXCHANGE_NAME, DelayedRabbitMQConfig.DELAYED_ROUTING_KEY, msg, a ->{
+            a.getMessageProperties().setDelay(delayTime);
+            return a;
+        });
+    }
 }
